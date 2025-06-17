@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Loten Maker</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        input, button { margin: 5px 0; }
+        .winners { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Loten Maker</h1>
+    <label>Aantal loten: <input type="number" id="totalTickets" min="1" value="10"></label><br>
+    <label>Aantal prijzen: <input type="number" id="numPrizes" min="1" value="3"></label><br>
+    <button onclick="genereerLoten()">Genereer Loten</button>
+    <div id="resultaat"></div>
+
+    <script>
+    function genereerLoten() {
+        const totaal = parseInt(document.getElementById('totalTickets').value);
+        const prijzen = parseInt(document.getElementById('numPrizes').value);
+
+        if (prijzen > totaal) {
+            document.getElementById('resultaat').innerHTML = "Aantal prijzen kan niet hoger zijn dan het aantal loten!";
+            return;
+        }
+
+        // Maak een array met lotenummers
+        let loten = [];
+        for (let i = 1; i <= totaal; i++) {
+            loten.push(i);
+        }
+
+        // Kies winnende loten
+        let winnendeLoten = [];
+        while (winnendeLoten.length < prijzen) {
+            let index = Math.floor(Math.random() * loten.length);
+            winnendeLoten.push(loten.splice(index, 1)[0]);
+        }
+
+        // Toon resultaat
+        document.getElementById('resultaat').innerHTML =
+            `<p>Alle loten: ${Array.from({length: totaal}, (_,i)=>i+1).join(', ')}</p>
+             <p class="winners">Winnende loten: ${winnendeLoten.join(', ')}</p>`;
+    }
+    </script>
+</body>
+</html>
